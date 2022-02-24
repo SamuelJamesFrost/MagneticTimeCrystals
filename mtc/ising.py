@@ -17,11 +17,11 @@ import random
 class Model:
     """Ising model simulation"""
 
-    def __init__(self, shape=(250, 250), temperature=0.8):
+    def __init__(self, shape=(100, 100), temperature=0.8):
         self.width, self.height = shape
         self.temperature = temperature
         self.lattice = np.array([
-            [random.choice([-1, 1]) for _ in range(self.width)]
+            [random.choice([1, 1]) for _ in range(self.width)]
                                     for _ in range(self.height)
         ])
 
@@ -38,12 +38,23 @@ class Model:
         # j moves right and left
         if j + 1 < self.width:
             E += -2 * centre * self.lattice[i, j+1]
+        if j + 1 == self.width:
+            E += -2 * centre * self.lattice[i, 0]
+
         if j - 1 >= 0:
             E += -2 * centre * self.lattice[i, j-1]
+        if j - 1 == -1:
+            E += -2 * centre * self.lattice[i, self.width-1]
+
         if i - 1 >= 0:
             E += -2 * centre * self.lattice[i-1, j]
+        if i - 1 == -1:
+            E += -2 * centre * self.lattice[self.height-1, j]
+
         if i + 1 < self.height:
             E += -2 * centre * self.lattice[i+1, j]
+        if i + 1 == self.height:
+            E += -2 * centre * self.lattice[0, j]
 
         return E
 
@@ -56,9 +67,9 @@ class Model:
         E = self.energy(i, j)
         T = self.temperature
 
-        if E > 0:
+        if E >= 0:
             self.lattice[i, j] *= -1
-        elif np.exp(E/(T)) >= random.random():
+        elif np.exp(E/(T)) >= random.random() and T != 0:
             self.lattice[i, j] *= -1
 
         return E
@@ -80,6 +91,13 @@ class Model:
         Writer = manim.writers['ffmpeg']
         writer = Writer(fps=fps)
 
+        magnet = []
+        x_axis = [] 
+
+        # converts inputted cmap string into a cmap object 
+        if isinstance(cmap, str):
+            cmap = mpl.cm.get_cmap(cmap)
+
         # save plot as an mp4 file via ffmpeg
         with writer.saving(fig, video_file, dpi=dpi):
             log("baking cake...")
@@ -91,9 +109,21 @@ class Model:
 
                 # save a video frame every cycles_per_frame frame
                 if cycle % cycles_per_frame == 0:
-                    img = plt.imshow(self.lattice, cmap=cmap)
+                    # exponential factor for more frames near the start 
+                    #print(cycle % int(cycles_per_frame / (500/np.exp(cycle/10000)+1)))
+                    plt.clf() # clears the figure every cycle so graphs don't accumulate
+                    magnet.append(sum(sum(self.lattice))/(self.height * self.width))
+                    x_axis.append(cycle)
+
+                    plt.subplot(211)
+                    img = plt.imshow(self.lattice, cmap=cmap, clim=(-1, 1))
+                    plt.subplot(212)
+                    plt.plot(x_axis, magnet)
+
+                    plt.ylabel("Pseudo-Magnetisation")
+                    plt.xlabel("Cycles")
                     writer.grab_frame()
                     img.remove()
 
             log("\rding!", " " * 16)
-
+            print(len(magnet))

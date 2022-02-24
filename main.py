@@ -2,10 +2,10 @@ import mtc
 
 if __name__ == '__main__':
     # Simulate Ising model.
-    cycles = 50_000_000
+    cycles = 500_000
     duration = 15 # seconds
     shape = (100, 100)
-    T = 0.8 # Kelvin
+    T = 1.5 # Kelvin
 
     print("generating ising model video.")
 
