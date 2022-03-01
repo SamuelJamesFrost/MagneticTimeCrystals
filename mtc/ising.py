@@ -1,11 +1,9 @@
 from . import log
 from .colours import pastel
 from .constants import kb  # Boltzmann constant
-
+import inspect
 import numpy as np
-import matplotlib as mpl
-import matplotlib.animation as manim
-import matplotlib.pyplot as plt
+
 
 import random
 
@@ -17,15 +15,25 @@ import random
 class Model:
     """Ising model simulation"""
 
-    def __init__(self, shape=(100, 100), temperature=0.8):
+    def __init__(self, shape=(100, 100), temperature=0.8, magnetic_field=0):
         self.width, self.height = shape
         self.temperature = temperature
+        self.magnetic_field = magnetic_field
         self.lattice = np.array([
             [random.choice([-1, -1]) for _ in range(self.width)]
                                     for _ in range(self.height)
         ])
+        self.last_cycle = 0
 
-    def energy(self, i, j, B=0):
+    def magnetisation(self):
+        """
+        calculates the net magnetisation of the system
+        i.e. the total spin of the system
+        does not have real units.
+        """
+        return sum(sum(self.lattice))/(self.height * self.width)
+
+    def energy(self, i, j):
         """
         Checks the position against its neighbours and compares spin,
         if it's the same the energy is negative (stable),
@@ -60,27 +68,31 @@ class Model:
             E += -2 * centre * self.lattice[0, j]
 
         # magnetic field  essentially lowers the energy needed to switch state
-        E += - B * self.lattice[i, j]
+        E += - self.magnetic_field * self.lattice[i, j]
 
         return E
 
-    def cycle(self):
+    def cycle(self, cycle_num, cycle_callback=None):
         """
         Do one cycle.
         """
         i = random.randint(0, self.height - 1)
         j = random.randint(0, self.width  - 1)
-        E = self.energy(i, j, 2)
+        E = self.energy(i, j)
         T = self.temperature
 
         if E >= 0: # if E is in an unfavourable position
             self.lattice[i, j] *= -1
-        elif np.exp(E/(T)) >= random.random() and T != 0:
+        elif np.exp(E/(T)) >= random.random() and T != 0: # if E can "borrow" energy
             self.lattice[i, j] *= -1
 
+        if cycle_callback is not None:
+            cycle_callback(self, cycle_num)
+
+        self.last_cycle += 1
         return E
 
-    def simulate(self, video_file, cycles, duration, fps=8, dpi=192, cmap=pastel):
+    def simulate(self, cycles, cycles_callback=None):
         """
         Generate a video file of all the plot over all the cycles.
         At the end, the lattice (model state) is set to the state of
@@ -89,47 +101,10 @@ class Model:
         Neither the duration nor the fps affect how many cycles are performed,
         it does affect the rendering time a lot though, so choose wisely
         """
-        fig = plt.figure()
-        frames = fps * duration
-        cycles_per_frame = int(cycles / frames)
+        if isinstance(cycles, int):
+            cycles = range(self.last_cycle, cycles)
 
-        # grab ffmpeg writer
-        Writer = manim.writers['ffmpeg']
-        writer = Writer(fps=fps)
+        for cycle in cycles:
+            # perform a cycle.
+            self.cycle(cycle, cycles_callback)                
 
-        magnet = []
-        x_axis = [] 
-
-        # converts inputted cmap string into a cmap object 
-        if isinstance(cmap, str):
-            cmap = mpl.cm.get_cmap(cmap)
-
-        # save plot as an mp4 file via ffmpeg
-        with writer.saving(fig, video_file, dpi=dpi):
-            log("baking cake...")
-
-            for cycle in range(cycles):
-                log(f"\rfinished: {round(cycle/cycles * 100)}%", end="")
-                # perform a cycle.
-                self.cycle()
-
-                # save a video frame every cycles_per_frame frame
-                if cycle % cycles_per_frame == 0:
-                    # exponential factor for more frames near the start 
-                    #print(cycle % int(cycles_per_frame / (500/np.exp(cycle/10000)+1)))
-                    plt.clf() # clears the figure every cycle so graphs don't accumulate
-                    magnet.append(sum(sum(self.lattice))/(self.height * self.width))
-                    x_axis.append(cycle)
-
-                    plt.subplot(211)
-                    img = plt.imshow(self.lattice, cmap=cmap, clim=(-1, 1))
-                    plt.subplot(212)
-                    plt.plot(x_axis, magnet)
-
-                    plt.ylabel("Pseudo-Magnetisation")
-                    plt.xlabel("Cycles")
-                    writer.grab_frame()
-                    img.remove()
-
-            log("\rding!", " " * 16)
-            print(len(magnet))

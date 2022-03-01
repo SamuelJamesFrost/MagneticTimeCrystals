@@ -1,15 +1,8 @@
 import mtc
+import matplotlib.pyplot as plt
+import numpy as np
 
 if __name__ == '__main__':
     # Simulate Ising model.
-    cycles = 500_000
-    duration = 15 # seconds
-    shape = (100, 100)
-    T = 0.8 # Kelvin
-
-    print("generating ising model video.")
-
-    model = mtc.ising.Model(shape, T)
-    model.simulate('ising.mp4', cycles, duration, fps=5)
-
-
+    print("Nothing to do here, read the README")
+        

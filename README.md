@@ -1,14 +1,14 @@
 # MagneticTimeCrystals
 
-## Install and build
+## Requirements
 
 ```sh
 pip3 install -r requirements.txt
 ```
-run with
-```
-python3 main.py
-```
+## Running Models
+Choose a model/simulation from the `models/` folder.
+* `ising_model_temp_v_magnetisation.py` -- a plot of final magnetisations at a range of temperatures
+* `ising_model_video.py` -- a video visualisation of the evolution of the system
 
 # TODO
 

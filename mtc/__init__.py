@@ -7,6 +7,7 @@ def log(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 from . import ising
+from . import plot
 
 def main():
     pass
