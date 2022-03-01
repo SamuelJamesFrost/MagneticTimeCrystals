@@ -21,15 +21,18 @@ class Model:
         self.width, self.height = shape
         self.temperature = temperature
         self.lattice = np.array([
-            [random.choice([1, 1]) for _ in range(self.width)]
+            [random.choice([-1, -1]) for _ in range(self.width)]
                                     for _ in range(self.height)
         ])
 
-    def energy(self, i, j):
+    def energy(self, i, j, B=0):
         """
         Checks the position against its neighbours and compares spin,
         if it's the same the energy is negative (stable),
         if they're different it's positive (unstable)
+        Adds an external magnetic field, B, which adds an aligning
+        force to the spins, positive B will try to turn spins positive,
+        by default it is off
         """
         centre = self.lattice[i, j]
         E = 0
@@ -56,6 +59,9 @@ class Model:
         if i + 1 == self.height:
             E += -2 * centre * self.lattice[0, j]
 
+        # magnetic field  essentially lowers the energy needed to switch state
+        E += - B * self.lattice[i, j]
+
         return E
 
     def cycle(self):
@@ -64,10 +70,10 @@ class Model:
         """
         i = random.randint(0, self.height - 1)
         j = random.randint(0, self.width  - 1)
-        E = self.energy(i, j)
+        E = self.energy(i, j, 2)
         T = self.temperature
 
-        if E >= 0:
+        if E >= 0: # if E is in an unfavourable position
             self.lattice[i, j] *= -1
         elif np.exp(E/(T)) >= random.random() and T != 0:
             self.lattice[i, j] *= -1

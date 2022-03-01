@@ -5,7 +5,7 @@ if __name__ == '__main__':
     cycles = 500_000
     duration = 15 # seconds
     shape = (100, 100)
-    T = 1.5 # Kelvin
+    T = 0.8 # Kelvin
 
     print("generating ising model video.")
 
