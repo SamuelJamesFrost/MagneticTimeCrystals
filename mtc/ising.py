@@ -1,3 +1,7 @@
+"""
+Ising model
+"""
+
 from . import log
 from .colours import pastel
 from .constants import kb  # Boltzmann constant
@@ -20,7 +24,7 @@ class Model:
         self.temperature = temperature
         self.magnetic_field = magnetic_field
         self.lattice = np.array([
-            [random.choice([-1, -1]) for _ in range(self.width)]
+            [random.choice([-1, 1]) for _ in range(self.width)]
                                     for _ in range(self.height)
         ])
         self.last_cycle = 0
@@ -32,6 +36,11 @@ class Model:
         does not have real units.
         """
         return sum(sum(self.lattice))/(self.height * self.width)
+
+    def flip(self, mu):
+        flipping = np.array(
+            [random.choices([1, -1], [1-mu, mu], k=self.width) for _ in range(self.height)])
+        return flipping
 
     def energy(self, i, j):
         """

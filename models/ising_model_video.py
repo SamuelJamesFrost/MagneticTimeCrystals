@@ -1,21 +1,20 @@
 import mtc
 
-cycles = 100_000
+cycles = 5_000_000
 duration = 15 # seconds
 shape = (100, 100)
-T = 4 # Kelvin
-B = 8
+T = 0.8 # Kelvin
+B = 0
 
 mtc.log("generating ising model video.")
 
 model = mtc.ising.Model(shape, T, B)
 
 callback, stop_recording = mtc.plot.record_simulation('ising.mp4', cycles, duration)
-model.simulate(int(cycles/3), callback)
-model.magnetic_field = -8
-model.simulate(int(2*cycles/3), callback)
 
-model.magnetic_field = 0
-model.simulate(cycles, callback)
+x = 10
+for i in range(x):
+    model.simulate(int((i+1)*cycles/x), callback)
+    model.lattice *= model.flip(0.2)
 stop_recording()
 mtc.log("\ndone!")

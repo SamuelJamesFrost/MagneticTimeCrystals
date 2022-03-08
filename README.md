@@ -9,8 +9,10 @@ pip3 install -r requirements.txt
 Choose a model/simulation from the `models/` folder.
 * `ising_model_temp_v_magnetisation.py` -- a plot of final magnetisations at a range of temperatures
 * `ising_model_video.py` -- a video visualisation of the evolution of the system
+NOTE: Windows users may have to move the files inside of the `models/` folder out into the main folder, as windows does not handle symbolic links very well
 
 # TODO
+Once something has been completed, add it to `CHANGELOG.md` with the date and some brief description, and tick it off on the TODO list. Feel free to add anything.
 
 - [ ] Custom starting shapes of a particular spin e.g. stars/circles
 - [ ] Implement oscillations in time (because it is a time crystal)
