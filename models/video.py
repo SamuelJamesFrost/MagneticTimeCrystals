@@ -5,6 +5,7 @@ duration = 15 # seconds
 shape = (100, 100)
 T = 0.8 # Kelvin
 B = 0
+mu = 0.85
 
 mtc.log("generating ising model video.")
 
@@ -15,6 +16,6 @@ callback, stop_recording = mtc.plot.record_simulation('ising.mp4', cycles, durat
 x = 10
 for i in range(x):
     model.simulate(int((i+1)*cycles/x), callback)
-    model.lattice *= model.flip(0.2)
+    model.flip(mu)
 stop_recording()
 mtc.log("\ndone!")

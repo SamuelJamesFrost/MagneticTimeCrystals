@@ -19,14 +19,11 @@ import random
 class Model:
     """Ising model simulation"""
 
-    def __init__(self, shape=(100, 100), temperature=0.8, magnetic_field=0):
+    def __init__(self, shape=(100, 100), temperature=0.8, magnetic_field=0, mu=0.5):
         self.width, self.height = shape
         self.temperature = temperature
         self.magnetic_field = magnetic_field
-        self.lattice = np.array([
-            [random.choice([-1, 1]) for _ in range(self.width)]
-                                    for _ in range(self.height)
-        ])
+        self.lattice = self.random_grid(mu)
         self.last_cycle = 0
 
     def magnetisation(self):
@@ -37,10 +34,16 @@ class Model:
         """
         return sum(sum(self.lattice))/(self.height * self.width)
 
-    def flip(self, mu):
+    def random_grid(self, mu=0.5):
+        """
+        takes in mu, the probability of flipping, i.e. 0.85 will flip 85% of the spins
+        """
         flipping = np.array(
             [random.choices([1, -1], [1-mu, mu], k=self.width) for _ in range(self.height)])
         return flipping
+
+    def flip(self, mu):
+        self.lattice *= self.random_grid(mu)
 
     def energy(self, i, j):
         """

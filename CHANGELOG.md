@@ -6,3 +6,6 @@ Separated the plotting from the `ising.py` file, this allows for easier plotting
 
 ### 04/03
 Added a flipping function which creates a random lattice of spins, which when multiplied by the current lattice will result its random flipping proportional to some variable mu. Added a new file which demonstrates this. This new function brings out time crystal behaviour in the system, but only if mu > 0.85
+
+### 08/03
+Refactored the flipping function, created a random_grid function which is used in both the flipping function and the initialisation function.
