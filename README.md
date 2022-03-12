@@ -16,7 +16,8 @@ Once something has been completed, add it to `CHANGELOG.md` with the date and so
 
 - [ ] Custom starting shapes of a particular spin e.g. stars/circles through the use of image rasterisation
 - [ ] Add arguments to be taking in when running file
-- [ ] Make a plot as seen in the Gambetta paper 2.(d)
+- [ ] Add proper axes to `tau_v_mu.py`
+- [x] Make a plot as seen in the Gambetta paper 2.(d)
 - [x] Add ability to simultaneously flip a certain amount of spins  
 - [x] Implement oscillations in time (because it is a time crystal)
 - [x] Add a magnetic field that favours either spin up or down

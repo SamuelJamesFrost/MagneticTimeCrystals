@@ -9,3 +9,6 @@ Added a flipping function which creates a random lattice of spins, which when mu
 
 ### 08/03
 Refactored the flipping function, created a random_grid function which is used in both the flipping function and the initialisation function.
+
+### 12/03
+Added a new plotting file, `tau_v_mu.py`, which plots the time between flips, against the number if spins flipped a in a 3D colour plot, this needs proper axes to be added to it 
