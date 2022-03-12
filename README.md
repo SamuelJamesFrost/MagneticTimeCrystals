@@ -14,9 +14,11 @@ NOTE: Windows users may have to move the files inside of the `models/` folder ou
 # TODO
 Once something has been completed, add it to `CHANGELOG.md` with the date and some brief description, and tick it off on the TODO list. Feel free to add anything.
 
-- [ ] Custom starting shapes of a particular spin e.g. stars/circles
-- [ ] Implement oscillations in time (because it is a time crystal)
-- [ ] Add ability to simultaneously flip a certain amount of spins  
+- [ ] Custom starting shapes of a particular spin e.g. stars/circles through the use of image rasterisation
+- [ ] Add arguments to be taking in when running file
+- [ ] Make a plot as seen in the Gambetta paper 2.(d)
+- [x] Add ability to simultaneously flip a certain amount of spins  
+- [x] Implement oscillations in time (because it is a time crystal)
 - [x] Add a magnetic field that favours either spin up or down
 - [x] Add ability to export just graphs where parameters change e.g. Magnetisation vs Temperature - would need to find the number of cycles until it roughly reaches equilibrium, this could be used to find critical temperature etc.
 - [x] Make independent plotting function outside of simulate()

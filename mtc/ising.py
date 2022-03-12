@@ -34,7 +34,7 @@ class Model:
         """
         return sum(sum(self.lattice))/(self.height * self.width)
 
-    def random_grid(self, mu=0.5):
+    def random_grid(self, mu):
         """
         takes in mu, the probability of flipping, i.e. 0.85 will flip 85% of the spins
         """
@@ -55,29 +55,29 @@ class Model:
         by default it is off
         """
         centre = self.lattice[i, j]
-        E = 0
-
+        E = 0 
+        J = 2 # Coloumb interaction force (flip factor)
         # i moves from array to array
         # j moves right and left
         if j + 1 < self.width:
-            E += -2 * centre * self.lattice[i, j+1]
+            E += -J * centre * self.lattice[i, j+1]
         if j + 1 == self.width:
-            E += -2 * centre * self.lattice[i, 0]
+            E += -J * centre * self.lattice[i, 0]
 
         if j - 1 >= 0:
-            E += -2 * centre * self.lattice[i, j-1]
+            E += -J * centre * self.lattice[i, j-1]
         if j - 1 == -1:
-            E += -2 * centre * self.lattice[i, self.width-1]
+            E += -J * centre * self.lattice[i, self.width-1]
 
         if i - 1 >= 0:
-            E += -2 * centre * self.lattice[i-1, j]
+            E += -J * centre * self.lattice[i-1, j]
         if i - 1 == -1:
-            E += -2 * centre * self.lattice[self.height-1, j]
+            E += -J * centre * self.lattice[self.height-1, j]
 
         if i + 1 < self.height:
-            E += -2 * centre * self.lattice[i+1, j]
+            E += -J * centre * self.lattice[i+1, j]
         if i + 1 == self.height:
-            E += -2 * centre * self.lattice[0, j]
+            E += -J * centre * self.lattice[0, j]
 
         # magnetic field  essentially lowers the energy needed to switch state
         E += - self.magnetic_field * self.lattice[i, j]
@@ -105,14 +105,6 @@ class Model:
         return E
 
     def simulate(self, cycles, cycles_callback=None):
-        """
-        Generate a video file of all the plot over all the cycles.
-        At the end, the lattice (model state) is set to the state of
-        the last cycle in the simulation.
-
-        Neither the duration nor the fps affect how many cycles are performed,
-        it does affect the rendering time a lot though, so choose wisely
-        """
         if isinstance(cycles, int):
             cycles = range(self.last_cycle, cycles)
 
