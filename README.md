@@ -14,9 +14,9 @@ NOTE: Windows users may have to move the files inside of the `models/` folder ou
 # TODO
 Once something has been completed, add it to `CHANGELOG.md` with the date and some brief description, and tick it off on the TODO list. Feel free to add anything.
 
-- [ ] Custom starting shapes of a particular spin e.g. stars/circles through the use of image rasterisation
 - [ ] Add arguments to be taking in when running file
-- [ ] Add proper axes to `tau_v_mu.py`
+- [x] Custom starting shapes of a particular spin e.g. stars/circles through the use of image rasterisation
+- [x] Add proper axes to `tau_v_mu.py`
 - [x] Make a plot as seen in the Gambetta paper 2.(d)
 - [x] Add ability to simultaneously flip a certain amount of spins  
 - [x] Implement oscillations in time (because it is a time crystal)

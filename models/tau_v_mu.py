@@ -2,21 +2,22 @@ import mtc
 import matplotlib.pyplot as plt
 import numpy as np
 
-tau = 30 # how many times the entire system is allowed to evolve before flipping
-        # i.e tau = 2 means 20,000 (2 * (100x100)) cycles between each flip
-        # tau CANNOT BE 0 (ZERO), the larger the value of tau the more cycles required and thus
-        # the longer the computational time
-single_evolution = 10_000
-shape = (100, 100)
+tau = 40 # the resolution of the tau values
+         # how many times the entire system is allowed to evolve before flipping
+         # i.e tau = 2 means 20,000 (2 * (100x100)) cycles between each flip
+         # tau CANNOT BE 0 (ZERO), the larger the value of tau the more cycles required and thus
+         # the longer the computational time
+shape = (75, 75)
+single_evolution = shape[0] * shape[1] 
 B = 0
 T = 0
-res = 40 # how many different mu values we want
-tau = res # we want it square so for now tau = res
+res = 80 # how many different mu values we want
+#tau = res # we want it square so for now tau = res
 flips = 10 # how many times you want it to flip, incerases the resolution of the data
 final = [ [None]*res for i in range(tau)]
 
-mus = np.linspace(0.8, 1, res)  # * = explode 
-taus = np.linspace(0.1, 4, tau)
+mus = np.linspace(0, 1, res)  # * = explode 
+taus = np.linspace(0.01, 6, tau) # upper limit of tau increases computation time a lot
 
 for k, tau in enumerate(taus):
     cycles = tau * single_evolution * flips * res
@@ -41,10 +42,13 @@ for k, tau in enumerate(taus):
         net_magnet = sum(abs(np.array(net_magnet[int(0*len(net_magnet)):])))/len(net_magnet)
         final[k][i] = net_magnet
 
-        mtc.log(f"\rtau: {k+1}/{len(taus)} mu: {i+1}/{len(mus)} ", end="  ")
+        mtc.log(f"\rtau: {k+1}/{len(taus)} mu: {i+1}/{len(mus)} ", end="   ")
 
 mtc.log("\ndone!")
 
-plt.imshow(final, origin='lower')
+plt.imshow(final, origin='lower', extent=[0, 1, 0, 6], aspect='auto', cmap='cool')
 plt.colorbar()
+plt.xlabel(r"$\mu$")
+plt.ylabel(r"$\tau$")
+plt.savefig('temp_2.png', dpi=600)
 plt.show()

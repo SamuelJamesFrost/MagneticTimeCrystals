@@ -8,6 +8,7 @@ def log(*args, **kwargs):
 
 from . import ising
 from . import plot
+from . import raster
 
 def main():
     pass

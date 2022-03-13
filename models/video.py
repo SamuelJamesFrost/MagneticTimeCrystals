@@ -10,9 +10,12 @@ mu = 0.97
 mtc.log("generating ising model video.")
 
 model = mtc.ising.Model(shape, T, B, mu=0.5)
-callback, stop_recording = mtc.plot.record_simulation('ising.mp4', cycles, duration, fps=10)
+model.lattice = mtc.raster.shape_init(mtc.raster.square, 10, 80, 80, shape)
+callback, stop_recording = mtc.plot.record_simulation('ising.mp4', cycles, duration, fps=5)
 
-x = 50
+model.simulate(cycles, callback)
+
+x = 20
 for i in range(x):
     model.simulate(int((i+1)*cycles/x), callback)
     model.flip(mu)

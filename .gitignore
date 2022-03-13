@@ -5,6 +5,7 @@ __pycache__/
 
 # Generated files
 *.mp4
+*.png
 
 # C extensions
 *.so
@@ -133,3 +134,5 @@ dmypy.json
 
 # OS Files
 *.ini
+.vscode
+.DS_Store
