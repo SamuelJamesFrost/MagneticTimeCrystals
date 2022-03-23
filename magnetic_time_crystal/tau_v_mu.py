@@ -16,12 +16,12 @@ def graph(T, res=8, mu=(0,1), tau=(1,4)):
     single_evolution = shape[0] * shape[1]
     B = 0
     flips = 10 # how many times you want it to flip, incerases the resolution of the data
-    final = [ [None]*res for i in range(tau)]
+    final = [ [None]*res for i in range(res)]
     mu_min, mu_max = mu
     tau_min, tau_max = tau
 
     mus = np.linspace(mu_min, mu_max, res)  # * = explode
-    taus = np.linspace(tau_min, tau_max, tau) # upper limit of tau increases computation time a lot
+    taus = np.linspace(tau_min, tau_max, res) # upper limit of tau increases computation time a lot
 
     for k, tau in enumerate(taus):
         cycles = tau * single_evolution * flips * res
@@ -46,12 +46,12 @@ def graph(T, res=8, mu=(0,1), tau=(1,4)):
             net_magnet = sum(abs(np.array(net_magnet[int(0.8*len(net_magnet)):])))/(0.2*len(net_magnet))
             final[k][i] = net_magnet
 
-            mtc.log(f"\rT: {T} tau: {k+1}/{len(taus)} mu: {i+1}/{len(mus)} ", end="   ")
+            mtc.log(f"\rT: {round(T, 3)} tau: {k+1}/{len(taus)} mu: {i+1}/{len(mus)} ", end=" "*30)
 
     plt.imshow(final, origin='lower', extent=[mu_min, 1, tau_min, tau_max], aspect='auto', cmap='cool')
     plt.colorbar()
     plt.xlabel(r"$\mu$")
     plt.ylabel(r"$\tau$")
-    plt.title(rf"$T = {T}$K")
+    plt.title(rf"$T = {round(T, 3)}$K")
     return plt.imshow(final, origin='lower', extent=[mu_min, 1, tau_min, tau_max], aspect='auto', cmap='cool')
 

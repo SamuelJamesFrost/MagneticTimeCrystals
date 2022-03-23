@@ -23,10 +23,10 @@ def record_simulation(video_file, dpi=192, cmap=pastel, fps=1):
     saver = writer.saving(fig, video_file, dpi=dpi)
     saver.__enter__()
 
-    def generate_frame(T):
+    def generate_frame(*args, **kwargs):
         plt.clf() # clears the figure every cycle so graphs don't accumulate
 
-        img = tvm.graph(T)
+        img = tvm.graph(*args, **kwargs)
 
         writer.grab_frame()
         img.remove()
