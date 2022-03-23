@@ -1,0 +1,35 @@
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.animation as manim
+import numpy as np
+import sys
+from .colours import pastel
+from . import log
+from . import tvm
+
+def record_simulation(video_file, dpi=192, cmap=pastel, fps=1):
+    if isinstance(cmap, str):
+        cmap = mpl.cm.get_cmap(cmap)
+
+    fig = plt.figure()
+
+    # grab ffmpeg writer
+    Writer = manim.writers['ffmpeg']
+    writer = Writer(fps=fps)
+
+    magnet = []
+    x_axis = [] 
+
+    saver = writer.saving(fig, video_file, dpi=dpi)
+    saver.__enter__()
+
+    def generate_frame(T):
+        plt.clf() # clears the figure every cycle so graphs don't accumulate
+
+        img = tvm.graph(T)
+
+        writer.grab_frame()
+        img.remove()
+
+    return generate_frame, lambda: saver.__exit__(*sys.exc_info())
+

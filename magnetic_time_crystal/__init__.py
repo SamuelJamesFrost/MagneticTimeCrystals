@@ -9,6 +9,8 @@ def log(*args, **kwargs):
 from . import ising
 from . import plot
 from . import raster
+from . import tau_v_mu as tvm
+from . import tvm_plot
 
 def main():
     pass

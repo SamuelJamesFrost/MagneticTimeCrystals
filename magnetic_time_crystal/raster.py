@@ -96,7 +96,7 @@ def star_of_david(p):
     return triangle(p) or triangle(-p)
 
 def ascii_draw(shape):
-    bg, fg = '-1', ' 1'
+    bg, fg = ' ', '#'
     w, h = 90, 40
 
     for y in np.linspace(-1, 1, h):
