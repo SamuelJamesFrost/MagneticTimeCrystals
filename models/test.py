@@ -1,3 +1,4 @@
 import mtc
 
-mtc.ising.Model()
+model = mtc.nano.Model()
+model.energy()

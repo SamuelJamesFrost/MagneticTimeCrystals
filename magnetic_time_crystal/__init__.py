@@ -11,6 +11,7 @@ from . import plot
 from . import raster
 from . import tau_v_mu as tvm
 from . import tvm_plot
+from . import nano
 
 def main():
     pass

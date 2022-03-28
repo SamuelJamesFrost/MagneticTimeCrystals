@@ -52,6 +52,6 @@ def graph(T, res=8, mu=(0,1), tau=(1,4)):
     plt.colorbar()
     plt.xlabel(r"$\mu$")
     plt.ylabel(r"$\tau$")
-    plt.title(rf"$T = {round(T, 3)}$K")
+    plt.title(rf"$T = {round(T, 3)}$")
     return plt.imshow(final, origin='lower', extent=[mu_min, 1, tau_min, tau_max], aspect='auto', cmap='cool')
 

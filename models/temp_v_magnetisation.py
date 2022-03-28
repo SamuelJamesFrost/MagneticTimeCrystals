@@ -4,7 +4,7 @@ import numpy as np
 import random
 import time
 
-cycles = 500_000
+cycles = 100_000
 duration = 15 # seconds
 shape = (100, 100)
 B = 0
@@ -12,10 +12,10 @@ sneed = int(time.time()) # sneeding for each simualtion
 print(f'seeding with {sneed} for each sub-simulation.')
 
 net_magnet = []
-temperatures = [*np.linspace(0, 8, 20)] # * = explode 
+temperatures = [*np.linspace(0, 8, 10)] # * = explode
 
 for i, T in enumerate(temperatures):
-    random.seed(sneed) 
+    random.seed(sneed)
     model = mtc.ising.Model(shape, T, B)
     model.simulate(cycles)
     net_magnet.append(model.magnetisation())
@@ -24,4 +24,4 @@ for i, T in enumerate(temperatures):
 mtc.log("\ndone!")
 plt.plot(temperatures, net_magnet)
 plt.show()
-    
+
