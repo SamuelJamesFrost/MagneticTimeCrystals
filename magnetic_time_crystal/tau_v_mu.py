@@ -1,9 +1,10 @@
 import mtc
 import matplotlib.pyplot as plt
 import numpy as np
+from . import ising
 
 
-def graph(T, res=8, mu=(0,1), tau=(1,4)):
+def graph(model_constructor=ising.Model, T=0, res=8, mu=(0,1), tau=(1,4)):
     #tau = 8 # the resolution of the tau values
             # how many times the entire system is allowed to evolve before flipping
             # i.e tau = 2 means 20,000 (2 * (100x100)) cycles between each flip
@@ -15,7 +16,7 @@ def graph(T, res=8, mu=(0,1), tau=(1,4)):
     shape = (75, 75)
     single_evolution = shape[0] * shape[1]
     B = 0
-    flips = 10 # how many times you want it to flip, incerases the resolution of the data
+    flips = 30 # how many times you want it to flip, incerases the resolution of the data
     final = [ [None]*res for i in range(res)]
     mu_min, mu_max = mu
     tau_min, tau_max = tau
@@ -33,7 +34,7 @@ def graph(T, res=8, mu=(0,1), tau=(1,4)):
                     total_cycles.append(cycle)
                     net_magnet.append(model.magnetisation())
 
-            model = mtc.ising.Model(shape, T, B, 0.8)
+            model = model_constructor(shape, T, B, 0.8)
 
             for j in np.arange(i*cycles/res, (i+1)*cycles/res, cycles/(res*flips)):
                 sub_cycles = int(j-((i)*cycles/res) + cycles/(res*flips))
@@ -48,7 +49,7 @@ def graph(T, res=8, mu=(0,1), tau=(1,4)):
 
             mtc.log(f"\rT: {round(T, 3)} tau: {k+1}/{len(taus)} mu: {i+1}/{len(mus)} ", end=" "*30)
 
-    plt.imshow(final, origin='lower', extent=[mu_min, 1, tau_min, tau_max], aspect='auto', cmap='cool')
+    plt.imshow(final, origin='lower', extent=[mu_min, 1, tau_min, tau_max], aspect='auto', cmap='cool', clim=(0,1))
     plt.colorbar()
     plt.xlabel(r"$\mu$")
     plt.ylabel(r"$\tau$")
