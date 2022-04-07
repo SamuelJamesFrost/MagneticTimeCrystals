@@ -13,7 +13,11 @@ Choose a model/simulation from the `models/` folder.
 * `video.py` -- a video visualisation of the evolution of the system
 * `tau_v_mu_temp.py` -- plots a matrix of final magnetisation for a range of tau and mu values, can be useful for determining the boundary of time crystal behaviour
 
-**NOTE**: Windows users may have to move the files inside of the `models/` folder out into the main folder, as windows does not handle symbolic links very well (probably fixed now)
+## Usage
+
+NOTE: You may simply replace `mtc.nano.Model` with `mtc.ising.Model` in any of the files inside of `models/`, to choose which simulation model you want to run. 
+
+On Windows visual studio is required to run the makefile and compile the C code, alternatively you can install the minGW C compiler and GNUMake for Windows. If all else fails you can use Windows Subshell for Linux (WSL). 
 
 # TODO
 Once something has been completed, add it to `CHANGELOG.md` with the date and some brief description, and tick it off on the TODO list. Feel free to add anything.
