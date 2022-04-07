@@ -10,5 +10,4 @@ import numpy as np
 #     video_frame_at_temp(T, 20, (0, 1), (0.1, 4))
 # stop_recording()
 
-mtc.tvm.graph(mtc.nano.Model, res=10, mu=(0.75, 1), tau=(0.25, 3))
-plt.show()
+mtc.tvm.graph(mtc.nano.Model, res=4, mu=(0.75, 1), tau=(0.25, 3))

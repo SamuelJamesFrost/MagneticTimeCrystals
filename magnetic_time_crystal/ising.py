@@ -90,7 +90,7 @@ class Model:
 
         if E >= 0: # if E is in an unfavourable position
             self.lattice[i, j] *= -1
-        elif np.exp(E/(T)) >= random.random() and T != 0: # if E can "borrow" energy
+        elif T != 0 and np.exp(E/(T)) >= random.random(): # if E can "borrow" energy
             self.lattice[i, j] *= -1
 
         if cycle_callback is not None:

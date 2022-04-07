@@ -1,7 +1,7 @@
 import mtc
 import numpy as np
 
-cycles = 200_000
+cycles = 100_000
 duration = 15 # seconds
 shape = (100, 100)
 T = 0 # NOT Kelvin

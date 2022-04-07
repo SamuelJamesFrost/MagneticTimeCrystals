@@ -17,7 +17,8 @@ Choose a model/simulation from the `models/` folder.
 
 NOTE: You may simply replace `mtc.nano.Model` with `mtc.ising.Model` in any of the files inside of `models/`, to choose which simulation model you want to run. 
 
-On Windows visual studio is required to run the makefile and compile the C code, alternatively you can install the minGW C compiler and GNUMake for Windows. If all else fails you can use Windows Subshell for Linux (WSL). 
+On Windows, visual studio is required to run the makefile and compile the C code, alternatively you can install the minGW C compiler and GNUMake for Windows. If all else fails you can use Windows Subshell for Linux (WSL) (highly recommended).
+On Windows, you may have to modify the code to use a `.dll` file instead of a `.so` file in the `nano.py` file. 
 
 # TODO
 Once something has been completed, add it to `CHANGELOG.md` with the date and some brief description, and tick it off on the TODO list. Feel free to add anything.

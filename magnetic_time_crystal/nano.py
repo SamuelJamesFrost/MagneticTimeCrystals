@@ -8,6 +8,7 @@ C = None
 if exists(so):
     ffi = FFI()
     ffi.cdef("double nano_magnetisation(signed char *arr, size_t width, size_t height);")
+    ffi.cdef("int nano_energy(signed char *lattice, size_t width, size_t height, size_t i, size_t j);")
     C = ffi.dlopen(so)
 else:
     print("You should compile the shared object file to improve performance")
@@ -56,8 +57,8 @@ class Model(ising.Model):
         # there is definitely a better way to do this...
         for j in range(self.width):
             for i in range(self.height):
-                stripe -= self.lattice[i,j] * self.lattice[(i+1) % self.width, j]
-                stripe += self.lattice[i,j] * self.lattice[i, (j+1) % self.height]
+                stripe += self.lattice[i,j] * self.lattice[(i+1) % self.width, j]
+                stripe -= self.lattice[i,j] * self.lattice[i, (j+1) % self.height]
 
         return stripe/(2*self.width*self.height)
 
@@ -66,5 +67,16 @@ if C is not None:
     def magnetisation(self):
         doc
         lattice = ffi.cast("signed char *", self.lattice.ctypes.data)
-        return C.nano_magnetisation(lattice, self.width, self.height)
+        width = ffi.cast("size_t", self.width)
+        height = ffi.cast("size_t", self.height)
+        return C.nano_magnetisation(lattice, width, height)
     Model.magnetisation = magnetisation
+
+    def energy(self, i, j):
+        lattice = ffi.cast("signed char *", self.lattice.ctypes.data)
+        width = ffi.cast("size_t", self.width)
+        height = ffi.cast("size_t", self.height)
+        i = ffi.cast("size_t", i)
+        j = ffi.cast("size_t", j)
+        return C.nano_energy(lattice, width, height, i, j)
+    Model.energy = energy
