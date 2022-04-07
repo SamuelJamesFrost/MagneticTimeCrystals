@@ -6,13 +6,14 @@
 pip3 install -r requirements.txt
 ```
 `ffmpeg` must be installed **and** in your path if you wish to run `video.py`. 
-It is recommended to have `gcc` installed and in your path, so that you can use the C implementations of certain functions which speed up the program significantly (400%). Simply run the makefile and then continue to run the model as normal.
+It is recommended to have a C compiler installed and in your path, so that you can use the C implementations of certain functions which speed up the program significantly (400%), this is not necessary however. Simply run the makefile and then continue to run the model as normal.
 ## Running Models
 Choose a model/simulation from the `models/` folder.
 * `temp_v_magnetisation.py` -- a plot of final magnetisations at a range of temperatures
 * `video.py` -- a video visualisation of the evolution of the system
 * `tau_v_mu_temp.py` -- plots a matrix of final magnetisation for a range of tau and mu values, can be useful for determining the boundary of time crystal behaviour
-NOTE: Windows users may have to move the files inside of the `models/` folder out into the main folder, as windows does not handle symbolic links very well
+
+**NOTE**: Windows users may have to move the files inside of the `models/` folder out into the main folder, as windows does not handle symbolic links very well (probably fixed now)
 
 # TODO
 Once something has been completed, add it to `CHANGELOG.md` with the date and some brief description, and tick it off on the TODO list. Feel free to add anything.
