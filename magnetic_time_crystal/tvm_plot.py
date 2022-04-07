@@ -7,7 +7,7 @@ from .colours import pastel
 from . import log
 from . import tvm
 
-def record_simulation(video_file, dpi=192, cmap=pastel, fps=1):
+def record_simulation(video_file, dpi=400, cmap=pastel, fps=5):
     if isinstance(cmap, str):
         cmap = mpl.cm.get_cmap(cmap)
 

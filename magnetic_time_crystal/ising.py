@@ -24,6 +24,7 @@ class Model:
         self.temperature = temperature
         self.magnetic_field = magnetic_field
         self.lattice = self.random_grid(mu)
+        self.lattice_mu = mu
         self.last_cycle = 0
 
     def magnetisation(self):
@@ -39,7 +40,8 @@ class Model:
         takes in mu, the probability of flipping, i.e. 0.85 will flip 85% of the spins
         """
         flipping = np.array(
-            [random.choices([1, -1], [1-mu, mu], k=self.width) for _ in range(self.height)])
+            [random.choices([1, -1], [1-mu, mu], k=self.width) for _ in range(self.height)],
+            dtype=np.byte)
         return flipping
 
     def flip(self, mu):
@@ -55,34 +57,27 @@ class Model:
         by default it is off
         """
         centre = self.lattice[i, j]
-        E = 0 
         J = 2 # Coloumb interaction force (flip factor)
         # i moves from array to array
         # j moves right and left
-        if j + 1 < self.width:
-            E += -J * centre * self.lattice[i, j+1]
-        if j + 1 == self.width:
-            E += -J * centre * self.lattice[i, 0]
+        dist = 1
+        E_tot = 0
+        for k in range(1, dist+1):
+            E = 0 
+            # right
+            E += -J * centre * self.lattice[i, (j+k) % self.width]
+            # left
+            E += -J * centre * self.lattice[i, (j-k) % self.width]
+            # above
+            E += -J * centre * self.lattice[(i-k) % self.height , j]
+            # below
+            E += -J * centre * self.lattice[(i+k) % self.height, j]
+            
+            E += -self.magnetic_field * self.lattice[i, j]
+            E /= k**12  # distance proportionality
+            E_tot += E
 
-        if j - 1 >= 0:
-            E += -J * centre * self.lattice[i, j-1]
-        if j - 1 == -1:
-            E += -J * centre * self.lattice[i, self.width-1]
-
-        if i - 1 >= 0:
-            E += -J * centre * self.lattice[i-1, j]
-        if i - 1 == -1:
-            E += -J * centre * self.lattice[self.height-1, j]
-
-        if i + 1 < self.height:
-            E += -J * centre * self.lattice[i+1, j]
-        if i + 1 == self.height:
-            E += -J * centre * self.lattice[0, j]
-
-        # magnetic field  essentially lowers the energy needed to switch state
-        E += - self.magnetic_field * self.lattice[i, j]
-
-        return E
+        return E_tot
 
     def cycle(self, cycle_num, cycle_callback=None):
         """
